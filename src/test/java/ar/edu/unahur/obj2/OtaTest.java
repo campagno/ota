@@ -1,7 +1,9 @@
 package ar.edu.unahur.obj2;
 
+import ar.edu.unahur.obj2.proveedores.*;
 import org.joda.time.DateTime;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -11,9 +13,18 @@ import static org.testng.Assert.*;
 
 public class OtaTest {
 
+
     @org.testng.annotations.Test
     public void testBuscarVuelos() {
-        DistribuidorDeTrafico distribuidorDeTrafico = new DistribuidorDeTrafico();
+
+        Sabre sabre = new Sabre();
+        SabreAdaptador sabreAdaptador = new SabreAdaptador(sabre);
+        Worldspan worldspan = new Worldspan();
+        WorldspanAdaptador worldspanAdaptador = new WorldspanAdaptador(worldspan);
+        Amadeus amadeus = new Amadeus();
+        AmadeusAdapador amadeusAdapador = new AmadeusAdapador(amadeus);
+        List<Proveedor> proveedores = Stream.of(sabreAdaptador,worldspanAdaptador,amadeusAdapador).collect(Collectors.toList());
+        DistribuidorDeTrafico distribuidorDeTrafico = new DistribuidorDeTrafico(new ArrayList<Proveedor>(proveedores));
         Ota ota = new Ota(distribuidorDeTrafico);
 
         DateTime fecha = new DateTime("2019-12-13");
@@ -22,11 +33,19 @@ public class OtaTest {
         List<Vuelo> vuelos = ota.buscarVuelos(fecha, "BUE", "MIA");
 
 
+
     }
 
     @org.testng.annotations.Test
     public void testReservar() {
-        DistribuidorDeTrafico distribuidorDeTrafico = new DistribuidorDeTrafico();
+        Sabre sabre = new Sabre();
+        SabreAdaptador sabreAdaptador = new SabreAdaptador(sabre);
+        Worldspan worldspan = new Worldspan();
+        WorldspanAdaptador worldspanAdaptador = new WorldspanAdaptador(worldspan);
+        Amadeus amadeus = new Amadeus();
+        AmadeusAdapador amadeusAdapador = new AmadeusAdapador(amadeus);
+        List<Proveedor> proveedores = Stream.of(sabreAdaptador,worldspanAdaptador,amadeusAdapador).collect(Collectors.toList());
+        DistribuidorDeTrafico distribuidorDeTrafico = new DistribuidorDeTrafico(proveedores);
         Ota ota = new Ota(distribuidorDeTrafico);
 
         DateTime fecha = new DateTime("2019-12-13");

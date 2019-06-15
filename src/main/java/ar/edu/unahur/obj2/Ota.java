@@ -1,5 +1,6 @@
 package ar.edu.unahur.obj2;
 
+import ar.edu.unahur.obj2.proveedores.Proveedor;
 import org.joda.time.DateTime;
 
 import java.util.Collections;
@@ -15,15 +16,16 @@ public class Ota {
     }
 
     public List<Vuelo> buscarVuelos(DateTime fecha, String origen, String destino) {
-        String codigoProveedor = distribuidorDeTrafico.proveedor();
+        Proveedor proveedor = distribuidorDeTrafico.proveedor();
+        return proveedor.buscarVuelo(fecha, origen, destino);
         // TODO Implementar
-        return Collections.emptyList();
+
     }
 
     public Boleto reservar(Vuelo vuelo, Set<Pasajero> pasajeros) {
-        String codigoProveedor = distribuidorDeTrafico.proveedor();
+        Proveedor proveedor = distribuidorDeTrafico.proveedor();
+        return proveedor.reservar(vuelo,pasajeros);
         // TODO Implementar
-        return null;
     }
 
 
