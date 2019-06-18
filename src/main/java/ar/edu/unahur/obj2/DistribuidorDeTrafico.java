@@ -12,7 +12,7 @@ import java.util.Random;
 public class DistribuidorDeTrafico {
 
     private Random random = new Random();
-    private List<Proveedor>proveedores = new ArrayList<>();
+    private List<Proveedor>proveedores;
 
     public DistribuidorDeTrafico(List<Proveedor> proveedores) {
         this.proveedores = proveedores;
@@ -23,18 +23,6 @@ public class DistribuidorDeTrafico {
 
         return proveedores.get(random.nextInt(proveedores.size()));
 
-       // switch (random.nextInt(9)) {
-       //     case 0:
-       //     case 1:
-       //     case 2: return "amadeus";
-       //     case 3:
-       //     case 4:
-       //     case 5: return "sabre";
-       //     case 6:
-       //     case 7:
-       //     case 8: return "worldspan";
-       //     default: return "amadeus";
-       // }
 
     }
     public void agregarProveedor(Proveedor proveedor){

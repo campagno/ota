@@ -23,7 +23,7 @@ public class Worldspan {
     }
 
     public List<Vuelo> searchFlights(DateTime.Property dia, DateTime.Property mes, DateTime.Property anio, final String origen, final String destino) {
-        final DateTime fecha = DateTime.parse(anio + "-" + mes + "-" + dia);
+        final DateTime fecha = DateTime.parse(""+anio + "-" + mes + "-" + dia+"");
         return vuelos.stream()
                 .filter(v -> v.getFecha().equals(fecha)
                         && v.getOrigen().equals(origen)

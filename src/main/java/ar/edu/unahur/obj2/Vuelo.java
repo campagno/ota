@@ -64,4 +64,16 @@ public class Vuelo {
     public String getProveedor() {
         return proveedor;
     }
+
+    @Override
+    public String toString() {
+        return "Vuelo{" +
+                "origen='" + origen + '\'' +
+                ", fecha=" + fecha +
+                ", destino='" + destino + '\'' +
+                ", numero='" + numero + '\'' +
+                ", lugaresDisponibles=" + lugaresDisponibles +
+                ", proveedor='" + proveedor + '\'' +
+                '}';
+    }
 }

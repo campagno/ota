@@ -2,6 +2,7 @@ package ar.edu.unahur.obj2;
 
 import ar.edu.unahur.obj2.proveedores.*;
 import org.joda.time.DateTime;
+import org.testng.annotations.BeforeTest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,19 +14,35 @@ import static org.testng.Assert.*;
 
 public class OtaTest {
 
+    private Amadeus amadeus;
+    private Sabre sabre;
+    private Worldspan worldspan;
+    private SabreAdaptador sabreAdaptador;
+    private AmadeusAdapador amadeusAdapador;
+    private WorldspanAdaptador worldspanAdaptador;
+    private DistribuidorDeTrafico distribuidorDeTrafico;
+    private Ota ota;
+    private List<Proveedor> proveedores;
+
+    @BeforeTest
+    public void setup() {
+        Sabre sabre = new Sabre();
+        Amadeus amadeus = new Amadeus();
+        Worldspan worldspan = new Worldspan();
+        sabreAdaptador = new SabreAdaptador(sabre);
+        amadeusAdapador = new AmadeusAdapador(amadeus);
+        worldspanAdaptador = new WorldspanAdaptador(worldspan);
+        proveedores = Stream.of(sabreAdaptador,worldspanAdaptador,amadeusAdapador).collect(Collectors.toList());
+
+        distribuidorDeTrafico = new DistribuidorDeTrafico(proveedores);
+        ota = new Ota(distribuidorDeTrafico);
+
+
+    }
 
     @org.testng.annotations.Test
     public void testBuscarVuelos() {
 
-        Sabre sabre = new Sabre();
-        SabreAdaptador sabreAdaptador = new SabreAdaptador(sabre);
-        Worldspan worldspan = new Worldspan();
-        WorldspanAdaptador worldspanAdaptador = new WorldspanAdaptador(worldspan);
-        Amadeus amadeus = new Amadeus();
-        AmadeusAdapador amadeusAdapador = new AmadeusAdapador(amadeus);
-        List<Proveedor> proveedores = Stream.of(sabreAdaptador,worldspanAdaptador,amadeusAdapador).collect(Collectors.toList());
-        DistribuidorDeTrafico distribuidorDeTrafico = new DistribuidorDeTrafico(new ArrayList<Proveedor>(proveedores));
-        Ota ota = new Ota(distribuidorDeTrafico);
 
         DateTime fecha = new DateTime("2019-12-13");
 
@@ -34,19 +51,14 @@ public class OtaTest {
 
 
 
+
+
+
     }
 
     @org.testng.annotations.Test
     public void testReservar() {
-        Sabre sabre = new Sabre();
-        SabreAdaptador sabreAdaptador = new SabreAdaptador(sabre);
-        Worldspan worldspan = new Worldspan();
-        WorldspanAdaptador worldspanAdaptador = new WorldspanAdaptador(worldspan);
-        Amadeus amadeus = new Amadeus();
-        AmadeusAdapador amadeusAdapador = new AmadeusAdapador(amadeus);
-        List<Proveedor> proveedores = Stream.of(sabreAdaptador,worldspanAdaptador,amadeusAdapador).collect(Collectors.toList());
-        DistribuidorDeTrafico distribuidorDeTrafico = new DistribuidorDeTrafico(proveedores);
-        Ota ota = new Ota(distribuidorDeTrafico);
+
 
         DateTime fecha = new DateTime("2019-12-13");
 
