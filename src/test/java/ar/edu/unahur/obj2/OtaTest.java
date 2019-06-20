@@ -164,4 +164,30 @@ public class OtaTest {
 
 
     }
+    @org.testng.annotations.Test
+    public void testReservarWorldspan() {
+        distribuidorDeTrafico = new DistribuidorDeTrafico(worldspamProveedor);
+        ota = new Ota(distribuidorDeTrafico);
+
+
+        DateTime fechaW = new DateTime("2019-12-13");
+
+
+        List<Vuelo> vuelosOta = ota.buscarVuelos(fechaW, "BUE", "MIA");
+        List<Vuelo> vuelosWorldspan = worldspan.searchFlights(fechaW.getDayOfMonth(),fechaW.getMonthOfYear(),fechaW.getYear(), "BUE", "MIA");
+
+        Vuelo elegidoOta =  vuelosOta.get(0);
+        Vuelo elegidoWorldspan =  vuelosWorldspan.get(0);
+
+        Set<Pasajero> pasajeros = Stream.of(new Pasajero("Eduardo", "Campagno", 29)).collect(Collectors.toSet());
+
+        Boleto boletoOta = ota.reservar(elegidoOta, pasajeros );
+        Boleto boletoWorldspan = worldspan.bookFlight(elegidoWorldspan, pasajeros );
+
+
+        assertEquals(boletoOta.getVuelo(), elegidoOta);
+        assertEquals(boletoWorldspan.getVuelo(),elegidoWorldspan);
+
+
+    }
 }
