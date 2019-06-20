@@ -29,9 +29,9 @@ public class OtaTest {
 
     @BeforeTest
     public void setup() {
-        Sabre sabre = new Sabre();
-        Amadeus amadeus = new Amadeus();
-        Worldspan worldspan = new Worldspan();
+        sabre = new Sabre();
+        amadeus = new Amadeus();
+        worldspan = new Worldspan();
         sabreAdaptador = new SabreAdaptador(sabre);
         amadeusAdapador = new AmadeusAdapador(amadeus);
         worldspanAdaptador = new WorldspanAdaptador(worldspan);
@@ -87,11 +87,11 @@ public class OtaTest {
 
 
 
-        DateTime fecha = new DateTime("2019-12-14");
+        DateTime fecha = new DateTime("2019-12-15");
 
 
-        List<Vuelo> vuelosOTA = ota.buscarVuelos(fecha, "BUE", "MIA");
-        List<Vuelo> vuelosAmadeus = amadeus.executeSearch(fecha, "BUE", "MIA");
+        List<Vuelo> vuelosOTA = ota.buscarVuelos(fecha, "BUE", "SAO");
+        List<Vuelo> vuelosAmadeus = amadeus.executeSearch(fecha, "BUE", "SAO");
 
         assertEquals(vuelosOTA,vuelosAmadeus);
 
@@ -109,8 +109,8 @@ public class OtaTest {
         DateTime fecha = new DateTime("2019-12-13");
 
 
-        List<Vuelo> vuelosOTA = ota.buscarVuelos(fecha, "BUE", "MIA");
-        List<Vuelo> vuelosWorldspan = worldspan.searchFlights(fecha.getDayOfMonth(),fecha.getMonthOfYear(),fecha.getYear(), "BUE", "MIA");
+        List<Vuelo> vuelosOTA = ota.buscarVuelos(fecha, "BUE", "NYC");
+        List<Vuelo> vuelosWorldspan = worldspan.searchFlights(fecha.getDayOfMonth(),fecha.getMonthOfYear(),fecha.getYear(), "BUE", "NYC");
 
         assertEquals(vuelosOTA,vuelosWorldspan);
 
@@ -120,19 +120,47 @@ public class OtaTest {
 
     @org.testng.annotations.Test
     public void testReservar() {
+        distribuidorDeTrafico = new DistribuidorDeTrafico(sabreProveedor);
+        ota = new Ota(distribuidorDeTrafico);
 
 
-        DateTime fecha1 = new DateTime("2019-12-13");
+        DateTime fecha = new DateTime("2019-12-13");
 
 
-        List<Vuelo> vuelos1 = ota.buscarVuelos(fecha1, "BUE", "SAO");
+        List<Vuelo> vuelos = ota.buscarVuelos(fecha, "BUE", "MIA");
 
-        Vuelo elegido =  vuelos1.get(0);
+        Vuelo elegido =  vuelos.get(0);
         Set<Pasajero> pasajeros = Stream.of(new Pasajero("Juan", "Pérez", 40)).collect(Collectors.toSet());
 
         Boleto boleto = ota.reservar(elegido, pasajeros );
 
         assertEquals(boleto.getVuelo(), elegido);
+
+
+    }
+    @org.testng.annotations.Test
+    public void testReservarAmadeus() {
+        distribuidorDeTrafico = new DistribuidorDeTrafico(amadeusProveedor);
+        ota = new Ota(distribuidorDeTrafico);
+
+
+        DateTime fecha = new DateTime("2019-12-13");
+
+
+        List<Vuelo> vuelosOta = ota.buscarVuelos(fecha, "BUE", "MIA");
+        List<Vuelo> vuelosAmadeus = amadeus.executeSearch(fecha, "BUE", "MIA");
+
+        Vuelo elegidoOta =  vuelosOta.get(0);
+        Vuelo elegidoAmadeus =  vuelosAmadeus.get(0);
+
+        Set<Pasajero> pasajeros = Stream.of(new Pasajero("Eduardo", "Campagno", 29)).collect(Collectors.toSet());
+
+        Boleto boletoOta = ota.reservar(elegidoOta, pasajeros );
+        Boleto boletoAmadeus = amadeus.executeBook(elegidoAmadeus, pasajeros );
+
+
+        assertEquals(boletoOta.getVuelo(), elegidoOta);
+        assertEquals(boletoAmadeus.getVuelo(),elegidoAmadeus);
 
 
     }
